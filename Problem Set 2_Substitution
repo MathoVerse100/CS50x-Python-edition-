@@ -7,7 +7,7 @@ def main():
         elif len(list(set(input_key))) == len(list(input_key)) == 26:
             input_text = input("Plain Text: ").strip()
             output = encrypt(input_list, input_text)
-            print("Cipher Text:", output)
+            print(f"Cipher Text: {output}")
             break
         elif len(list(input_key)) == 26 and len(list(set(input_key))) != len(list(input_key)):
             print("Key must not contain repeated alphabets")
