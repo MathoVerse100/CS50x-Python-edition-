@@ -1,0 +1,32 @@
+def main():
+    credit_number = int(input("Credit Number: "))
+    credit_validator(credit_number)
+
+
+def credit_validator(credit_number):
+    l_1 = l_2 = len(str(credit_number)) - 2
+    second_to_last_digits = []
+    remaining_digits = []
+    while l_1 >= 0:
+        second_to_last_digits.append(str(2 * int(str(credit_number)[l_1])))
+        l_1 -= 2
+    while l_2 >= 0:
+        remaining_digits.append(int(str(credit_number)[l_2 + 1]))
+        l_2 -= 2
+    upgraded_list = [int(x) for x in list("".join(second_to_last_digits))]
+    check_sum = sum(upgraded_list) + sum(remaining_digits)
+    if check_sum % 10 == 0:
+        if len(str(credit_number)) == 15 and int(str(credit_number)[0:2]) in [34, 37]:
+            print("American Express")
+        elif len(str(credit_number)) == 16 and int(str(credit_number)[0:2]) in [51, 52, 53, 54, 55]:
+            print("MasterCard")
+        elif len(str(credit_number)) in [13, 16] and int(str(credit_number)[0]) == 4:
+            print("Visa")
+        else:
+            print("Invalid")
+    else:
+        print("Invalid")
+
+
+if __name__ == "__main__":
+    main()
