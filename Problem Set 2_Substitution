@@ -1,0 +1,40 @@
+def main():
+    while True:
+        input_key = "".join(input("Key: ").split())
+        input_list = list(input_key.lower())
+        if input_key.lower() == "quit":
+            break
+        elif len(list(set(input_key))) == len(list(input_key)) == 26:
+            input_text = input("Plain Text: ").strip()
+            output = encrypt(input_list, input_text)
+            print("Cipher Text:", output)
+            break
+        elif len(list(input_key)) == 26 and len(list(set(input_key))) != len(list(input_key)):
+            print("Key must not contain repeated alphabets")
+        elif input_key == "":
+            print("Key must not be empty")
+        elif len([x for x in input_list if x.isdigit()]) > 0:
+            print("Key must not contain non-alphabets")
+        else:
+            print("Key must be 26 characters long")
+
+
+def encrypt(input_list, input_text):
+    alphabet = ["a", "b", "c", "d", "e", "f", "g", "h", "i", "j",
+                "k", "l", "m", "n", "o", "p", "q", "r", "s", "t",
+                "u", "v", "w", "x", "y", "z"]
+    encryption_method = {i: input_list[alphabet.index(i)] for i in alphabet}
+    output_list = []
+    for char in input_text:
+        if char.isalpha() and char == char.lower():
+            output_list.append(encryption_method[char])
+        elif char.isalpha() and char == char.upper():
+            output_list.append(encryption_method[char.lower()].upper())
+        else:
+            output_list.append(char)
+
+    return "".join(output_list)
+
+
+if __name__ == "__main__":
+    main()
