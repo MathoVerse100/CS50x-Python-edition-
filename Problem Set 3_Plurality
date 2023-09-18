@@ -10,10 +10,10 @@ class Name:
 def main():
     while True:
         array = input().split()
-        if len(array) > 9:
-            print("Elections exceed the maximum amount of 9.")
-        else:
+        if len(array) <= 9:
             break
+        print("Elections exceed the maximum amount of 9.")
+    
     votes(array)
 
 
