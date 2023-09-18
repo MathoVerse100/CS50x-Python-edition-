@@ -1,0 +1,48 @@
+def main():
+    text = input("Text: ")
+
+    text_letters = number_of_letters(text)
+    text_sentences = number_of_sentences(text)
+    text_words = number_of_words(text)
+
+    Coleman_Liau_index(text_letters, text_sentences, text_words)
+
+
+def number_of_letters(string):
+    letter_count = 0
+    for letter in string:
+        if letter.isalpha():
+            letter_count += 1
+
+    return letter_count
+
+
+def number_of_words(string):
+    word_count = len(string.split())
+    return word_count
+
+
+def number_of_sentences(string):
+    sentence_count = 0
+    for letter in string:
+        if letter in [".", "!", "?"]:
+            sentence_count += 1
+
+    return sentence_count
+
+
+def Coleman_Liau_index(letter_count, sentence_count, word_count):
+    L = 100 * (letter_count / word_count)
+    S = 100 * (sentence_count / word_count)
+    index = round(0.0588 * L - 0.296 * S - 15.8)
+
+    if index > 16:
+        print(f"Grade 16+")
+    elif index < 1:
+        print(f"Before Grade 1")
+    else:
+        print(f"Grade {index}")
+
+
+if __name__ == "__main__":
+    main()
