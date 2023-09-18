@@ -1,0 +1,45 @@
+class Name:
+    def __init__(self, name, counter=0):
+        self.name = name
+        self.counter = counter
+
+    def __str__(self):
+        return self.name
+
+
+def main():
+    while True:
+        array = input().split()
+        if len(array) > 9:
+            print("Elections exceed the maximum amount of 9.")
+        else:
+            break
+    votes(array)
+
+
+def votes(elections):
+    election_classes = [Name(person) for person in elections]
+    number_of_voters = int(input("Number of voters: "))
+    i = 0
+
+    while i < number_of_voters:
+        person = input("Vote: ")
+        if person in elections:
+            index = elections.index(person)
+            election_classes[index].counter += 1
+        else:
+            print("Invalid vote.")
+        i += 1
+
+    print_winner(election_classes)
+
+
+def print_winner(election_classes):
+    maximum_votes = max([person.counter for person in election_classes])
+    for person in election_classes:
+        if person.counter == maximum_votes:
+            print(person)
+
+
+if __name__ == "__main__":
+    main()
