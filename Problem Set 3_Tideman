@@ -1,0 +1,87 @@
+-----##### Note: This is extremely trash. Will fix later.
+__________________________________________________________________
+def main():
+    candidates = input().split()
+    number_of_voters = int(input("Number of voters: "))
+    number_of_candidates = len(candidates)
+    votes = []
+    p = 0
+
+    while p < number_of_voters:
+        ranks = []
+        t = 1
+        while t < number_of_candidates + 1:
+            name = input(f"Rank {t}: ")
+            if name in candidates:
+                ranks.append(name)
+                t += 1
+            else:
+                print("Invalid vote.")
+        votes.append(ranks)
+        p += 1
+        print()
+    return preferences(candidates, number_of_candidates, votes, number_of_voters)
+
+
+def locked(candidates, number_of_candidates, voting_list, voters_number):
+    adjacency_matrix = [[0 for _ in range(number_of_candidates)] for _ in range(number_of_candidates)]
+    for i in range(number_of_candidates):
+        for j in range(i + 1, number_of_candidates):
+            i_counter = 0
+            j_counter = 0
+            for k in range(voters_number):
+                array = voting_list[k]
+                if array.index(candidates[i]) < array.index(candidates[j]):
+                    i_counter += 1
+                else:
+                    j_counter += 1
+            if j_counter < i_counter:
+                adjacency_matrix[i][j] = 1
+                adjacency_matrix[j][i] = 0
+            elif j_counter > i_counter:
+                adjacency_matrix[i][j] = 0
+                adjacency_matrix[j][i] = 1
+    return adjacency_matrix
+
+
+def preferences(candidates, number_of_candidates, voting_list, voters_number):
+    preference_matrix = [[0 for _ in range(number_of_candidates)] for _ in range(number_of_candidates)]
+    for i in range(number_of_candidates):
+        for j in range(i + 1, number_of_candidates):
+            i_counter = 0
+            j_counter = 0
+            for k in range(voters_number):
+                array = voting_list[k]
+                if array.index(candidates[i]) < array.index(candidates[j]):
+                    i_counter += 1
+                else:
+                    j_counter += 1
+            preference_matrix[i][j] = i_counter
+            preference_matrix[j][i] = j_counter
+    array_sums = [sum(preference_matrix[i]) for i in range(number_of_candidates)]
+    print(array_sums)
+    if array_sums.count(max(array_sums)) > 1:
+        return strength_of_victory(preference_matrix, number_of_candidates, candidates)
+    else:
+        print(candidates[array_sums.index(max(array_sums))])
+
+
+def strength_of_victory(preference_matrix, number_of_candidates, candidates):
+    pair_sums = []
+    minimum = []
+    for i in range(number_of_candidates):
+        for j in range(i + 1, number_of_candidates):
+            pair_sums.append((i, j, abs(preference_matrix[i][j] - preference_matrix[j][i])))
+            minimum.append(abs(preference_matrix[i][j] - preference_matrix[j][i]))
+    sorted_pair_sums = list(sorted(pair_sums, key=lambda value: pair_sums[2], reverse=True))
+    print(sorted_pair_sums)
+    minimum_vote_difference = min(minimum)
+    for i in range(len(pair_sums)):
+        if sorted_pair_sums[i][2] == minimum_vote_difference:
+            required_tuple = sorted_pair_sums[i - 1]
+            print(candidates[required_tuple[0]] if preference_matrix[required_tuple[0]][required_tuple[1]] >= preference_matrix[required_tuple[1]][required_tuple[0]]
+                  else candidates[required_tuple[1]])
+            break
+
+
+main()
